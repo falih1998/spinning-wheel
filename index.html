@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Konfirmasi Apakah Kamu</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      padding: 40px 20px;
+      background: #fdf6f0;
+    }
+
+    h1 {
+      font-size: 1.8em;
+    }
+
+    #buttons {
+      margin-top: 30px;
+      position: relative;
+      height: 200px;
+    }
+
+    button {
+      font-size: 1.2em;
+      padding: 12px 25px;
+      margin: 10px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    #yesBtn {
+      background-color: #4caf50;
+      color: white;
+    }
+
+    #noBtn {
+      position: absolute;
+      background-color: #f44336;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <h1>Apakah kamu benar [Nama Orangnya]?</h1>
+
+  <div id="buttons">
+    <button id="yesBtn" onclick="goToCamera()">YES</button>
+    <button id="noBtn" ontouchstart="moveButton(event)" onclick="tryNoClick()">NO</button>
+  </div>
+
+  <script>
+    let noClickCount = 0;
+
+    function moveButton(event) {
+      const btn = document.getElementById('noBtn');
+      const container = document.getElementById('buttons');
+
+      const maxX = container.clientWidth - btn.offsetWidth;
+      const maxY = container.clientHeight - btn.offsetHeight;
+
+      const newX = Math.random() * maxX;
+      const newY = Math.random() * maxY;
+
+      btn.style.left = `${newX}px`;
+      btn.style.top = `${newY}px`;
+    }
+
+    function tryNoClick() {
+      noClickCount++;
+      if (noClickCount === 2) {
+        alert("Udah lah, jangan ngeyel 😂. Tekan YES aja yuk~");
+      }
+      if (noClickCount >= 3) {
+        window.location.href = "no.html";
+      }
+    }
+
+    function goToCamera() {
+      window.location.href = "camera.html";
+    }
+  </script>
+</body>
+</html>
