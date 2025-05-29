@@ -2,92 +2,86 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Spinning Wheel</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Konfirmasi Apakah Kamu</title>
   <style>
     body {
       font-family: sans-serif;
       text-align: center;
-      padding: 20px;
+      padding: 40px 20px;
+      background: #fdf6f0;
     }
 
-    #wheel {
-      width: 300px;
-      height: 300px;
-      border-radius: 50%;
-      border: 10px solid #555;
-      margin: 20px auto;
+    h1 {
+      font-size: 1.8em;
+    }
+
+    #buttons {
+      margin-top: 30px;
       position: relative;
-      transition: transform 4s cubic-bezier(0.33, 1, 0.68, 1);
-    }
-
-    .segment {
-      position: absolute;
-      width: 50%;
-      height: 50%;
-      transform-origin: 100% 100%;
-      clip-path: polygon(100% 100%, 0% 100%, 100% 0%);
-    }
-
-    #pointer {
-      width: 0;
-      height: 0;
-      border-left: 20px solid transparent;
-      border-right: 20px solid transparent;
-      border-bottom: 30px solid red;
-      margin: auto;
+      height: 200px;
     }
 
     button {
-      padding: 10px 20px;
-      font-size: 16px;
+      font-size: 1.2em;
+      padding: 12px 25px;
+      margin: 10px;
+      border: none;
+      border-radius: 8px;
       cursor: pointer;
-      margin-top: 20px;
+      transition: all 0.3s ease;
     }
 
-    #result {
-      margin-top: 20px;
-      font-size: 20px;
-      font-weight: bold;
+    #yesBtn {
+      background-color: #4caf50;
+      color: white;
+    }
+
+    #noBtn {
+      position: absolute;
+      background-color: #f44336;
+      color: white;
     }
   </style>
 </head>
 <body>
+  <h1>Apakah kamu benar [Nama Orangnya]?</h1>
 
-  <h1>🎯 Spinning Wheel</h1>
-  <div id="pointer"></div>
-  <div id="wheel"></div>
-  <button onclick="spin()">SPIN!</button>
-  <div id="result"></div>
+  <div id="buttons">
+    <button id="yesBtn" onclick="goToCamera()">YES</button>
+    <button id="noBtn" ontouchstart="moveButton(event)" onclick="tryNoClick()">NO</button>
+  </div>
 
   <script>
-    const options = ['Hadiah A', 'Hadiah B', 'Hadiah C', 'Hadiah D', 'Hadiah E', 'Hadiah F'];
-    const wheel = document.getElementById('wheel');
-    const result = document.getElementById('result');
+    let noClickCount = 0;
 
-    // Buat segmen
-    options.forEach((opt, i) => {
-      const segment = document.createElement('div');
-      segment.className = 'segment';
-      segment.style.transform = `rotate(${(360 / options.length) * i}deg)`;
-      segment.style.backgroundColor = `hsl(${i * (360 / options.length)}, 80%, 60%)`;
-      segment.innerHTML = `<span style="position:absolute;left:110%;top:30%;transform:rotate(${(360 / options.length) / 2}deg);">${opt}</span>`;
-      wheel.appendChild(segment);
-    });
+    function moveButton(event) {
+      const btn = document.getElementById('noBtn');
+      const container = document.getElementById('buttons');
 
-    let deg = 0;
-    function spin() {
-      const spinDeg = Math.floor(Math.random() * 360) + 360 * 5; // putaran acak + beberapa rotasi penuh
-      deg += spinDeg;
-      wheel.style.transform = `rotate(${deg}deg)`;
+      const maxX = container.clientWidth - btn.offsetWidth;
+      const maxY = container.clientHeight - btn.offsetHeight;
 
-      const pickedIndex = options.length - Math.floor(((deg % 360) / 360) * options.length) % options.length;
-      const picked = options[pickedIndex % options.length];
-      setTimeout(() => {
-        result.innerText = `🎉 Kamu mendapatkan: ${picked}!`;
-      }, 4000); // tunggu sampai animasi selesai
+      const newX = Math.random() * maxX;
+      const newY = Math.random() * maxY;
+
+      btn.style.left = `${newX}px`;
+      btn.style.top = `${newY}px`;
+    }
+
+    function tryNoClick() {
+      noClickCount++;
+      if (noClickCount === 2) {
+        alert("Udah lah, jangan ngeyel 😂. Tekan YES aja yuk~");
+      }
+      if (noClickCount >= 3) {
+        window.location.href = "no.html";
+      }
+    }
+
+    function goToCamera() {
+      window.location.href = "camera.html";
     }
   </script>
-
 </body>
 </html>
