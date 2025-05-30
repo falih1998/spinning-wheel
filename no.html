@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kamu Ngeyel Ya?</title>
+  <style>
+    body {
+      background-color: #ffeaea;
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+    h1 {
+      color: #d32f2f;
+      font-size: 1.8em;
+    }
+    img {
+      width: 180px;
+      margin: 20px 0;
+      animation: shake 1s infinite alternate;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 1em;
+      border: none;
+      background-color: #f06292;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    @keyframes shake {
+      from { transform: rotate(-3deg); }
+      to { transform: rotate(3deg); }
+    }
+  </style>
+</head>
+<body>
+  <h1>Kenapa kamu pilih NO? 😤<br> Aku ngambek loh~</h1>
+  <img src="assets/avatars/pout.png" alt="chibi cemberut" />
+  <button onclick="window.location.href='wheel.html'">Next</button>
+</body>
+</html>
