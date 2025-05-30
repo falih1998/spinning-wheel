@@ -92,8 +92,8 @@
       { name: 'Gainer', img: 'assets/hadiah/Gainer.png' },
       { name: 'Isolate', img: 'assets/hadiah/Isolate.png' },
       { name: 'Creatine', img: 'assets/hadiah/creatine.png' },
-      { name: 'Sarung Tangan Gym', img: 'assets/hadiah/gloves.png' },
-      { name: 'Legging Gym Wanita', img: 'assets/hadiah/Legging_Celana_Olahraga.png' },
+      { name: 'Gloves Gym', img: 'assets/hadiah/gloves.png' },
+      { name: 'Legging Gym', img: 'assets/hadiah/Legging_Celana_Olahraga.png' },
       { name: 'Jaket Olahraga', img: 'assets/hadiah/jaket_olahraga.png' }
     ];
 
@@ -101,6 +101,7 @@
       canvasId: 'canvas',
       numSegments: rewards.length,
       outerRadius: canvasSize / 2.2,
+      textFontSize: 14, // ← Tambahkan ini untuk memperkecil teks
       segments: rewards.map(r => ({
         fillStyle: '#'+Math.floor(Math.random()*16777215).toString(16),
         text: r.name
