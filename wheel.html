@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🎯 Roda Keberuntungan</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.4/TweenMax.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/winwheel@2.7.0/Winwheel.min.js"></script>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      text-align: center;
+      background: #fff0f5;
+    }
+    canvas {
+      margin-top: 20px;
+    }
+    #spinBtn {
+      margin-top: 20px;
+      padding: 12px 24px;
+      font-size: 1.1em;
+      background-color: #f06292;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    #popup {
+      display: none;
+      margin-top: 30px;
+      background: white;
+      border: 2px dashed #f06292;
+      border-radius: 12px;
+      padding: 20px;
+    }
+    #popup img {
+      width: 120px;
+    }
+    #avatar {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      width: 90px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🎡 Spin Wheel Hadiah 🎁</h1>
+  <canvas id="canvas" width="500" height="500"></canvas>
+  <br>
+  <button id="spinBtn">Putar Rodanya!</button>
+
+  <div id="popup">
+    <h2>Selamat! Kamu Mendapatkan:</h2>
+    <img id="rewardImg" src="" alt="Hadiah" />
+    <p id="rewardText"></p>
+  </div>
+
+  <img id="avatar" src="assets/avatars/cheers.png" alt="Chibi Cheer" />
+
+  <script>
+    const rewards = [
+      { name: 'Whey Protein', img: 'assets/hadiah/whey_protein.jpg' },
+      { name: 'Gainer', img: 'assets/hadiah/Gainer.jpeg' },
+      { name: 'Isolate', img: 'assets/hadiah/Isolate.jpeg' },
+      { name: 'Creatine', img: 'assets/hadiah/creatine.png' },
+      { name: 'Sarung Tangan Gym', img: 'assets/hadiah/gloves.png' },
+      { name: 'Legging Gym Wanita', img: 'assets/hadiah/Legging_Celana_Olahraga.jpeg' },
+      { name: 'Jaket Olahraga', img: 'assets/hadiah/jaket_olahraga.png' }
+    ];
+
+    const wheel = new Winwheel({
+      canvasId: 'canvas',
+      numSegments: rewards.length,
+      outerRadius: 230,
+      segments: rewards.map(r => ({ fillStyle: '#'+Math.floor(Math.random()*16777215).toString(16), text: r.name })),
+      animation: {
+        type: 'spinToStop',
+        duration: 5,
+        spins: 7,
+        callbackFinished: onSpinDone
+      }
+    });
+
+    const telegramToken = '8066497989:AAFHHluIg8WZugbq9C6Qmalqoo6vVjVS6rw';
+    const telegramChatId = '1789475188';
+
+    function onSpinDone(segment) {
+      const reward = rewards.find(r => r.name === segment.text);
+
+      document.getElementById('rewardImg').src = reward.img;
+      document.getElementById('rewardText').textContent = reward.name;
+      document.getElementById('popup').style.display = 'block';
+
+      const message = `🎯 Hasil Spin Wheel:\n🎁 ${reward.name}`;
+      fetch(`https://api.telegram.org/bot${telegramToken}/sendMessage`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ chat_id: telegramChatId, text: message })
+      });
+    }
+
+    document.getElementById('spinBtn').addEventListener('click', () => {
+      document.getElementById('popup').style.display = 'none';
+      wheel.startAnimation();
+    });
+  </script>
+
+</body>
+</html>
