@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Konfirmasi Lucu</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      text-align: center;
+      background-color: #ffe6f0;
+      padding: 40px;
+    }
+    h1 {
+      font-size: 1.5em;
+      margin-bottom: 20px;
+    }
+    img {
+      width: 180px;
+      margin-bottom: 20px;
+      animation: blink 2s infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+    button {
+      padding: 12px 24px;
+      margin: 10px;
+      font-size: 1em;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    #yesBtn {
+      background-color: #ff66b2;
+      color: white;
+    }
+    #noBtn {
+      background-color: #999;
+      color: white;
+      position: absolute;
+    }
+  </style>
+</head>
+<body>
+  <h1>Apakah kamu <span style="color:#e91e63;">Marezya Antonieta Jihad</span>? 😏</h1>
+  <img src="assets/smile.png" alt="avatar lucu">
+  <br>
+  <button id="yesBtn">YES</button>
+  <button id="noBtn">NO</button>
+
+  <script>
+    const yesBtn = document.getElementById("yesBtn");
+    const noBtn = document.getElementById("noBtn");
+    let counter = 0;
+
+    yesBtn.addEventListener("click", () => {
+      yesBtn.textContent = "Loading... 😄";
+      setTimeout(() => {
+        window.location.href = "camera.html";
+      }, 1000);
+    });
+
+    function moveNoButton() {
+      const maxX = window.innerWidth - noBtn.offsetWidth;
+      const maxY = window.innerHeight - noBtn.offsetHeight;
+      const x = Math.floor(Math.random() * maxX);
+      const y = Math.floor(Math.random() * maxY);
+      noBtn.style.left = `${x}px`;
+      noBtn.style.top = `${y}px`;
+    }
+
+    function noAction() {
+      counter++;
+      if (counter >= 3) {
+        alert("Udah lah, jangan ngeyel 😂. Tekan YES aja yuk~");
+        setTimeout(() => {
+          window.location.href = "no.html";
+        }, 800);
+      } else {
+        moveNoButton();
+      }
+    }
+
+    noBtn.addEventListener("mouseover", noAction);
+    noBtn.addEventListener("touchstart", noAction);
+
+    window.onload = moveNoButton;
+  </script>
+</body>
+</html>
