@@ -1,0 +1,68 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spinning Wheel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Fredoka One', cursive;
+      text-align: center;
+      background: #fff0f5;
+      padding: 20px;
+    }
+    canvas {
+      border: 2px dashed #ccc;
+      background-color: #fff;
+      margin-top: 20px;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 1.2em;
+      background-color: #ff69b4;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎉 Putar Rodanya! 🎉</h1>
+  <canvas id="canvas" width="300" height="300"></canvas><br>
+  <button onclick="wheel.startAnimation();">Putar Roda</button>
+
+  <script src="assets/js/TweenMax.min.js"></script>
+  <script src="assets/js/Winwheel.js"></script>
+  <script>
+    const wheel = new Winwheel({
+      canvasId: 'canvas',
+      numSegments: 6,
+      outerRadius: 140,
+      segments: [
+        { fillStyle: '#eae56f', text: 'Whey' },
+        { fillStyle: '#89f26e', text: 'Gainer' },
+        { fillStyle: '#7de6ef', text: 'Outfit' },
+        { fillStyle: '#e7706f', text: 'Creatine' },
+        { fillStyle: '#eae56f', text: 'Gloves' },
+        { fillStyle: '#89f26e', text: 'Jaket' }
+      ],
+      animation: {
+        type: 'spinToStop',
+        duration: 5,
+        spins: 7,
+        callbackFinished: (indicatedSegment) => {
+          alert("Kamu mendapatkan hadiah: " + indicatedSegment.text);
+        }
+      }
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      wheel.draw();
+    });
+  </script>
+</body>
+</html>
